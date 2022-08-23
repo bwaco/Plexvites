@@ -1,0 +1,16 @@
+[discord]
+TOKEN = # Bot token #
+GUILD_ID = # ID of server #
+ADMIN_ID = # ID of admin user #
+PLEXUSER_ID = # ID of Plex role #
+
+[plex]
+PLEX_USERNAME = # Plex Username #
+PLEX_PASSWORD = # Plex password #
+PLEX_SERVERNAME = # Plex server name #
+
+[database]
+DATABASE_URL = # MongoDB URL #
+
+[timezone]
+TIMEZONE = # Timezone for database times #
