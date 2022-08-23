@@ -22,7 +22,7 @@ PLEX_SERVERNAME = config["plex"]["PLEX_SERVERNAME"]
 
 try:
     print("Logging into Plex")
-    account = MyPlexAccount("PLEX_USERNAME", "PLEX_PASSWORD")
+    account = MyPlexAccount(PLEX_USERNAME, PLEX_PASSWORD)
     plex = account.resource("The Lair").connect()
     sections = plex.library.sections()
 
