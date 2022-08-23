@@ -43,7 +43,16 @@ async def on_ready():
 
 @bot.event
 async def on_member_remove(member):
-    pass
+    left_discord = True
+    discord_id = member.id
+
+    remove_user = plexutils.remove(
+        plex_account=account,
+        database_object=database,
+        discord_id=int(discord_id),
+        left_discord=left_discord,
+    )
+    print(f"{member.id} has left the server, ran removal: {remove_user}")
 
 
 @bot.slash_command(guild_ids=[GUILD_ID])
@@ -55,25 +64,37 @@ async def dbls(ctx):
                 f'Index: {index} | Plex ID: {x["plex_id"]} | Discord ID: {x["discord_id"]} | Status: {x["status"]} | Date Added: {x["date_invited"]} | Date Removed: {x["date_removed"]}'
             )
             index += 1
+        print(f"{ctx.author.id} ran DBLS, {index} entries sent")
     else:
         await ctx.respond("You do not have permission to use this command")
+        print(f"{ctx.author.id} tried to run DBLS, but did not have permission")
 
 
 @bot.slash_command(guild_ids=[GUILD_ID])
 async def join(ctx, plex_id: discord.Option(str, "Your Plex username or email.")):
 
-    invite = plexutils.invite(
-        plex_account=account,
-        plex_server=plex,
-        sections=sections,
-        database_object=database,
-        plex_id=plex_id,
-        discord_id=ctx.author.id,
-    )
-    if invite.startswith("Successfully"):
-        await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, id=PLEXUSER_ID))
-    await ctx.author.send(invite)
-    await ctx.respond(invite, ephemeral=True)
+    if discord.utils.get(ctx.guild.roles, id=PLEXUSER_ID) not in ctx.author.roles:
+
+        invite_user = plexutils.invite(
+            plex_account=account,
+            plex_server=plex,
+            sections=sections,
+            database_object=database,
+            plex_id=plex_id,
+            discord_id=ctx.author.id,
+        )
+        if invite_user.startswith("Successfully"):
+            await ctx.author.add_roles(
+                discord.utils.get(ctx.guild.roles, id=PLEXUSER_ID)
+            )
+        print(f"{ctx.author.id} | {plex_id} ran join: {invite_user}")
+        await ctx.author.send(invite_user)
+        await ctx.respond(invite_user, ephemeral=True)
+    else:
+        await ctx.respond(
+            f"You have already been successfully added to Plex, ping @<{ADMIN_ID}> for assistance"
+        )
+        print(f"{ctx.author.id} tried to run join, but already has Plex role")
 
 
 @bot.slash_command(guild_ids=[GUILD_ID])
@@ -86,16 +107,17 @@ async def remove(
         await ctx.author.remove_roles(
             discord.utils.get(ctx.guild.roles, id=PLEXUSER_ID)
         )
-        await ctx.respond(
-            plexutils.remove(
-                plex_account=account,
-                database_object=database,
-                discord_id=int(discord_id),
-                left_discord=left_discord,
-            )
+        remove_user = plexutils.remove(
+            plex_account=account,
+            database_object=database,
+            discord_id=int(discord_id),
+            left_discord=left_discord,
         )
+        print(f"{ctx.author.id} ran remove on {discord_id}: {remove_user}")
+        await ctx.respond(remove_user)
     else:
         await ctx.respond("Not Authorized")
+        print(f"{ctx.author.id} tried to run remove, but did not have permission")
 
 
 bot.run(TOKEN)
