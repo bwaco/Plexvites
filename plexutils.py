@@ -8,7 +8,7 @@ config.read("config.ini")
 
 
 TIMEZONE = config["timezone"]["TIMEZONE"]
-ADMIN_ID = config["discord"]["ADMIN_ID"]
+ADMIN_ID = int(config["discord"]["ADMIN_ID"])
 
 pst = pytz.timezone(TIMEZONE)
 
