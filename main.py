@@ -14,8 +14,8 @@ config.read("config.ini")
 TOKEN = config["discord"]["TOKEN"]
 GUILD_ID = config["discord"]["GUILD_ID"]
 ADMIN_ID = config["discord"]["ADMIN_ID"]
+PLEXUSER_ID = config["discord"]["PLEXUSER_ID"]
 
-PLEXUSER_ID = config["plex"]["PLEXUSER_ID"]
 PLEX_USERNAME = config["plex"]["PLEX_USERNAME"]
 PLEX_PASSWORD = config["plex"]["PLEX_PASSWORD"]
 PLEX_SERVERNAME = config["plex"]["PLEX_SERVERNAME"]
