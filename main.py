@@ -66,7 +66,9 @@ async def dbls(ctx):
             index += 1
         print(f"{ctx.author.id} ran DBLS, {index} entries sent")
     else:
-        await ctx.respond("You do not have permission to use this command")
+        await ctx.respond(
+            "You do not have permission to use this command", ephemeral=True
+        )
         print(f"{ctx.author.id} tried to run DBLS, but did not have permission")
 
 
@@ -92,7 +94,8 @@ async def join(ctx, plex_id: discord.Option(str, "Your Plex username or email.")
         await ctx.respond(invite_user, ephemeral=True)
     else:
         await ctx.respond(
-            f"You have already been successfully added to Plex, contact @<{ADMIN_ID}> for assistance"
+            f"You have already been successfully added to Plex, contact @<{ADMIN_ID}> for assistance",
+            ephemeral=True,
         )
         print(f"{ctx.author.id} tried to run join, but already has Plex role")
 
